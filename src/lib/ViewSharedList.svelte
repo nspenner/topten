@@ -161,4 +161,48 @@
   .footer-note a:hover {
     text-decoration: underline;
   }
+
+  @media (max-width: 768px) {
+    .shared-container {
+      padding: 1.5rem 1rem;
+    }
+
+    h2 {
+      font-size: 1.5rem;
+    }
+
+    .author {
+      font-size: 0.9rem;
+    }
+
+    .game-item {
+      grid-template-columns: 1fr;
+      grid-template-rows: auto auto;
+      gap: 1rem;
+    }
+
+    .title-section {
+      grid-column: 1;
+      grid-row: 1;
+    }
+
+    .title-section h3 {
+      font-size: 1.2rem;
+    }
+
+    .game-card-wrapper {
+      grid-column: 1;
+      grid-row: 2;
+    }
+
+    .rank {
+      position: absolute;
+      left: -32px;
+      top: -18px;
+      width: 64px;
+      height: 64px;
+      font-size: 2rem;
+      border: 4px solid #ffa500;
+    }
+  }
 </style>

@@ -93,7 +93,7 @@
   </div>
 
   <div class="form-group">
-    <label for="description">Why is it in your list?</label>
+    <label for="description">Why is it in your list? (optional)</label>
     <textarea
       id="description"
       bind:value={description}
