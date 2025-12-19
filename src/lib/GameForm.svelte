@@ -29,11 +29,6 @@
       return
     }
 
-    if (!description.trim()) {
-      alert('Please enter a description')
-      return
-    }
-
     onAddGame({
       title: title.trim(),
       description: description.trim(),
