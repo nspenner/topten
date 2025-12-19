@@ -26,7 +26,6 @@
 
   .thumbnail {
     width: 100%;
-    max-height: 150px;
     border-radius: 6px;
     object-fit: cover;
   }
