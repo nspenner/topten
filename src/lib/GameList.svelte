@@ -97,7 +97,9 @@
           </button>
         </div>
 
-        <GameCard {game} />
+        <div class="game-card-wrapper">
+          <GameCard {game} />
+        </div>
       </div>
     {/each}
   </div>
@@ -194,9 +196,10 @@
     gap: 0.5rem;
   }
 
-  :global(.game-card) {
+  .game-card-wrapper {
     grid-column: 1 / 4;
     grid-row: 2 / 4;
+    min-width: 0;
   }
 
   .btn-reorder,

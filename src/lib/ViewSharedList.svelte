@@ -29,7 +29,9 @@
             {/if}
           </div>
 
-          <GameCard {game} />
+          <div class="game-card-wrapper">
+            <GameCard {game} />
+          </div>
         </div>
       {/each}
     </div>
@@ -128,9 +130,10 @@
     transform: scale(1.2);
   }
 
-  :global(.game-card) {
+  .game-card-wrapper {
     grid-column: 1 / 3;
     grid-row: 2;
+    min-width: 0;
   }
 
   .rank {

@@ -278,6 +278,7 @@
   }
 
   .instructions {
+    text-align: left;
     margin-top: 1.5rem;
     padding: 1rem;
     background: #f0f7ff;
