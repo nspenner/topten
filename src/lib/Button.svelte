@@ -24,7 +24,8 @@
     font-weight: 600;
     cursor: pointer;
     transition: transform 0.2s, box-shadow 0.2s;
-    font-family: inherit;
+    font-family: "BBH Hegarty", sans-serif;
+    letter-spacing: 1px;
   }
 
   .btn:hover:not(:disabled) {

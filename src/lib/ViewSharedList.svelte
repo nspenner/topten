@@ -6,7 +6,6 @@
 </script>
 
 <div class="shared-container">
-  <div class="shared-badge">👥 Shared List</div>
   <h2>{metadata.title || 'Top 10 Video Games'}</h2>
   {#if metadata.author}
     <p class="author">by {metadata.author}</p>
@@ -52,17 +51,6 @@
     box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
   }
 
-  .shared-badge {
-    display: inline-block;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    color: white;
-    padding: 0.5rem 1rem;
-    border-radius: 20px;
-    font-size: 0.85rem;
-    font-weight: 600;
-    margin-bottom: 1rem;
-  }
-
   h2 {
     margin: 0 0 0.5rem 0;
     color: #333;
@@ -73,7 +61,6 @@
     margin: 0 0 1.5rem 0;
     color: #999;
     font-size: 0.95rem;
-    font-style: italic;
   }
 
   .empty-state {
@@ -86,7 +73,7 @@
   .games-list {
     display: flex;
     flex-direction: column;
-    gap: 1rem;
+    gap: 3rem;
     margin-bottom: 2rem;
   }
 
@@ -98,8 +85,9 @@
     padding: 1rem;
     background: #f5f5f5;
     border-radius: 8px;
-    border-left: 4px solid #667eea;
+    border-right: 4px solid #667eea;
     align-items: start;
+    position: relative;
   }
 
   .title-section {
@@ -114,7 +102,7 @@
   .title-section h3 {
     margin: 0;
     color: #333;
-    font-size: 1.1rem;
+    font-size: 1.4rem;
     flex: 1;
     min-width: 0;
   }
@@ -138,16 +126,21 @@
 
   .rank {
     flex-shrink: 0;
-    width: 40px;
-    height: 40px;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    width: 100px;
+    height: 100px;
+    position: absolute;
+    left: -45px;
+    top: -8px;
+    font-size: 3.5rem;
+    background: linear-gradient(135deg, hsl(270, 37%, 66%) 0%, hsl(270, 37%, 46%) 100%);
     color: white;
     border-radius: 50%;
     display: flex;
     align-items: center;
     justify-content: center;
     font-weight: bold;
-    font-size: 1.2rem;
+    font-size: 3rem;
+    border: 8px solid #ffa500;
   }
 
   .footer-note {

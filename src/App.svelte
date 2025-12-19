@@ -119,6 +119,15 @@
     min-height: 100vh;
   }
 
+  :global(h1) {
+    font-family: "BBH Bartle", sans-serif;
+  }
+
+  :global(h2, h3, .author, .rank, .subtitle) {
+    font-family: "BBH Hegarty", sans-serif;
+    letter-spacing: 1px;
+  }
+
   main {
     padding: 2rem 1rem;
     min-height: 100vh;
@@ -140,7 +149,7 @@
     text-align: center;
     color: rgba(255, 255, 255, 0.8);
     margin-bottom: 2rem;
-    font-size: 1.1rem;
+    font-size: 1.4rem;
   }
 
   .content {

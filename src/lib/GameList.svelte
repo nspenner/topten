@@ -121,7 +121,7 @@
   .games-list {
     display: flex;
     flex-direction: column;
-    gap: 1rem;
+    gap: rem;
     overflow-y: auto;
     flex: 1;
   }
@@ -168,6 +168,7 @@
     align-items: center;
     gap: 0.5rem;
     min-width: 0;
+    text-align: left;
   }
 
   .title-section h3 {
