@@ -26,7 +26,7 @@
   {/if}
 
   <p class="footer-note">
-    ⚡ Create your own top 10 list by visiting <a href="/topten/">topten</a>
+    ⚡ Create your own top 10 list by visiting <a href="/">topten</a>
   </p>
 </div>
 
