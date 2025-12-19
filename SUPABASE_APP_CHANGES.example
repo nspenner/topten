@@ -1,0 +1,44 @@
+// Example: How to Update App.svelte to Support Supabase Sharing
+
+// At the top of your <script> tag, add these imports:
+
+import { getSharedSlugFromUrl, getGameListBySlug } from './lib/supabaseService'
+import { getSharedListFromUrl } from './lib/shareUtils' // Keep for fallback
+
+// In your onMount hook, replace the current shared list logic with this:
+
+onMount(async () => {
+  // Try Supabase first (if configured)
+  const slug = getSharedSlugFromUrl()
+  if (slug) {
+    try {
+      const result = await getGameListBySlug(slug)
+      if (result && result.games.length > 0) {
+        games = result.games
+        showSharedView = true
+        return // Exit early, successfully loaded from Supabase
+      }
+    } catch (error) {
+      console.error('Failed to load from Supabase:', error)
+      // Fall through to legacy loading
+    }
+  }
+  
+  // Fallback: Try legacy URL encoding
+  const legacyShared = getSharedListFromUrl()
+  if (legacyShared && legacyShared.games && legacyShared.games.length > 0) {
+    games = legacyShared.games
+    showSharedView = true
+  }
+})
+
+// Optional: Update your share button/event handler to import the new ShareModal:
+
+// OLD:
+// import ShareModal from './lib/ShareModal.svelte'
+
+// NEW:
+import ShareModal from './lib/ShareModal-Supabase.svelte'
+
+// The rest of your App.svelte stays the same!
+// The new ShareModal handles all the Supabase logic internally.

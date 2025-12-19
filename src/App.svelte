@@ -2,9 +2,10 @@
   import { onMount } from 'svelte'
   import GameForm from './lib/GameForm.svelte'
   import GameList from './lib/GameList.svelte'
-  import ShareModal from './lib/ShareModal.svelte'
+  import ShareModal from './lib/ShareModal-Supabase.svelte'
   import ViewSharedList from './lib/ViewSharedList.svelte'
   import { getSharedListFromUrl } from './lib/shareUtils'
+  import { getSharedSlugFromUrl, getGameListBySlug } from './lib/supabaseService'
   import Button from './lib/Button.svelte'
 
   let games = []
@@ -13,8 +14,25 @@
   let isShareModalOpen = false
   let hasLoaded = false
 
-  onMount(() => {
-    // Check if this is a shared list view
+  onMount(async () => {
+    // Try to load from Supabase first (if slug in URL)
+    const slug = getSharedSlugFromUrl()
+    if (slug) {
+      try {
+        const result = await getGameListBySlug(slug)
+        if (result && result.games && result.games.length > 0) {
+          sharedGames = result.games
+          sharedMetadata = result.metadata || {}
+          hasLoaded = true
+          return // Exit early, successfully loaded from Supabase
+        }
+      } catch (error) {
+        console.error('Failed to load from Supabase:', error)
+        // Fall through to legacy loading
+      }
+    }
+
+    // Fallback: Try legacy URL encoding
     const shared = getSharedListFromUrl()
     if (shared && shared.games && shared.games.length > 0) {
       sharedGames = shared.games

@@ -1,22 +1,52 @@
-import LZ from 'lz-string'
+import pako from 'pako'
 
 /**
- * Encode games array and metadata into a compressed URL-safe string
+ * Minify data by using short field names
+ * t=title, a=author, g=games, d=description, u=url, s=screenshot
  */
-export function encodeGames(games, metadata = {}) {
-  const data = {
-    title: metadata.title || 'My Top 10 Games',
-    author: metadata.author || 'Anonymous',
-    games: games.map(game => ({
-      title: game.title,
-      description: game.description,
-      url: game.url || '',
-      screenshot: game.screenshot || ''
+function minifyData(games, metadata) {
+  return {
+    t: metadata.title || 'My Top 10 Games',
+    a: metadata.author || 'Anonymous',
+    g: games.map(game => ({
+      t: game.title,
+      d: game.description,
+      u: game.url || '',
+      s: game.screenshot || ''
     }))
   }
+}
+
+/**
+ * Unminiify data by converting short field names back to full names
+ */
+function unminifyData(data) {
+  return {
+    title: data.t,
+    author: data.a,
+    games: Array.isArray(data.g) ? data.g.map(game => ({
+      title: game.t,
+      description: game.d,
+      url: game.u,
+      screenshot: game.s
+    })) : []
+  }
+}
+
+/**
+ * Encode games array and metadata into a deflate-compressed URL-safe string
+ */
+export function encodeGames(games, metadata = {}) {
+  const minified = minifyData(games, metadata)
+  const json = JSON.stringify(minified)
+  const compressed = pako.deflate(json)
   
-  const json = JSON.stringify(data)
-  return LZ.compressToEncodedURIComponent(json)
+  // Convert to base64url for URL safety
+  let binary = ''
+  for (let i = 0; i < compressed.length; i++) {
+    binary += String.fromCharCode(compressed[i])
+  }
+  return btoa(binary).replace(/\+/g, '-').replace(/\//g, '_').replace(/=/g, '')
 }
 
 /**
@@ -25,17 +55,36 @@ export function encodeGames(games, metadata = {}) {
  */
 export function decodeGames(encoded) {
   try {
-    const json = LZ.decompressFromEncodedURIComponent(encoded)
-    if (!json) return { games: [], metadata: {} }
+    if (!encoded) return { games: [], metadata: {} }
     
-    const data = JSON.parse(json)
+    // Convert from base64url back to binary
+    let binary = atob(encoded.replace(/-/g, '+').replace(/_/g, '/'))
+    const bytes = new Uint8Array(binary.length)
+    for (let i = 0; i < binary.length; i++) {
+      bytes[i] = binary.charCodeAt(i)
+    }
     
-    // Handle old format (array) for backwards compatibility
+    const decompressed = pako.inflate(bytes, { to: 'string' })
+    const data = JSON.parse(decompressed)
+    
+    // Handle minified format
+    if (data.g) {
+      const unminified = unminifyData(data)
+      return {
+        games: unminified.games,
+        metadata: {
+          title: unminified.title,
+          author: unminified.author
+        }
+      }
+    }
+    
+    // Handle old format for backwards compatibility
     if (Array.isArray(data)) {
       return { games: data, metadata: {} }
     }
     
-    // Handle new format (object with metadata)
+    // Fallback to old object format
     return {
       games: Array.isArray(data.games) ? data.games : [],
       metadata: {

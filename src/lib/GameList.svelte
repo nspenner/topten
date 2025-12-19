@@ -62,7 +62,14 @@
       >
         <div class="rank">{index + 1}</div>
 
-        <GameCard {game} />
+        <div class="title-section">
+          <h3>{game.title}</h3>
+          {#if game.url}
+            <a href={game.url} target="_blank" rel="noreferrer" class="link-icon" title="Visit game website">
+              🔗
+            </a>
+          {/if}
+        </div>
 
         <div class="controls">
           <button
@@ -89,6 +96,8 @@
             🗑️
           </button>
         </div>
+
+        <GameCard {game} />
       </div>
     {/each}
   </div>
@@ -116,15 +125,17 @@
   }
 
   .game-item {
-    display: flex;
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    grid-template-rows: auto auto auto;
     gap: 1rem;
-    align-items: flex-start;
     padding: 1rem;
     background: #f5f5f5;
     border-radius: 8px;
     cursor: move;
     transition: background-color 0.2s, box-shadow 0.2s;
     border-left: 4px solid #667eea;
+    align-items: start;
   }
 
   .game-item:hover {
@@ -133,7 +144,8 @@
   }
 
   .rank {
-    flex-shrink: 0;
+    grid-column: 1;
+    grid-row: 1;
     width: 40px;
     height: 40px;
     background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
@@ -144,12 +156,47 @@
     justify-content: center;
     font-weight: bold;
     font-size: 1.2rem;
+    flex-shrink: 0;
+  }
+
+  .title-section {
+    grid-column: 2;
+    grid-row: 1;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    min-width: 0;
+  }
+
+  .title-section h3 {
+    margin: 0;
+    color: #333;
+    font-size: 1.1rem;
+    flex: 1;
+    min-width: 0;
+  }
+
+  .link-icon {
+    flex-shrink: 0;
+    font-size: 1.2rem;
+    text-decoration: none;
+    transition: transform 0.2s;
+  }
+
+  .link-icon:hover {
+    transform: scale(1.2);
   }
 
   .controls {
-    flex-shrink: 0;
+    grid-column: 3;
+    grid-row: 1;
     display: flex;
     gap: 0.5rem;
+  }
+
+  :global(.game-card) {
+    grid-column: 1 / 4;
+    grid-row: 2 / 4;
   }
 
   .btn-reorder,
