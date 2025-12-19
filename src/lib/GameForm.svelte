@@ -1,7 +1,7 @@
-<script>
+<script lang="ts">
   import Button from './Button.svelte'
 
-  export let onAddGame = () => {}
+  export let onAddGame = (game: { title: string; description: string; url: string | null; screenshot: string | null }) => {}
 
   let title = ''
   let description = ''
@@ -98,14 +98,13 @@
   </div>
 
   <div class="form-group">
-    <label for="description">Why is it in your list? *</label>
+    <label for="description">Why is it in your list?</label>
     <textarea
       id="description"
       bind:value={description}
       placeholder="Share what makes this game special to you..."
-      rows="4"
-      required
-    />
+      rows="4">
+    </textarea>
   </div>
 
   <Button type="submit">Add Game</Button>

@@ -1,5 +1,6 @@
 <script>
   import { getShareUrl } from './shareUtils'
+  import Button from './Button.svelte';
 
   export let games = []
   export let isOpen = false
@@ -77,9 +78,7 @@
             value={shareUrl}
             class="url-input"
           />
-          <button class="copy-btn" on:click={copyToClipboard}>
-            {copied ? '✓ Copied!' : '📋 Copy'}
-          </button>
+          <Button onClick={copyToClipboard}>{copied ? '✓ Copied!' : '📋 Copy'}</Button>
         </div>
 
         <div class="instructions">
@@ -216,27 +215,6 @@
     font-size: 0.85rem;
     word-break: break-all;
     cursor: pointer;
-  }
-
-  .copy-btn {
-    padding: 0.75rem 1rem;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    color: white;
-    border: none;
-    border-radius: 6px;
-    font-weight: 600;
-    cursor: pointer;
-    white-space: nowrap;
-    transition: transform 0.2s, box-shadow 0.2s;
-  }
-
-  .copy-btn:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 5px 20px rgba(102, 126, 234, 0.4);
-  }
-
-  .copy-btn:active {
-    transform: translateY(0);
   }
 
   .instructions {

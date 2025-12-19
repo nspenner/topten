@@ -187,5 +187,10 @@
     :global(.list-header .btn) {
       align-self: stretch;
     }
+
+    .form-section {
+      position: relative;
+      top: 0;
+    }
   }
 </style>

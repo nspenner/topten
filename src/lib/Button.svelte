@@ -1,5 +1,5 @@
-<script>
-  export let type = 'button'
+<script lang="ts">
+  export let type: 'button' | 'submit' | 'reset'
   export let disabled = false
   export let variant = 'primary'
   export let onClick = null

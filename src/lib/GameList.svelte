@@ -1,9 +1,9 @@
-<script>
+<script lang="ts">
   import GameCard from './GameCard.svelte'
 
   export let games = []
-  export let onReorderGame = () => {}
-  export let onDeleteGame = () => {}
+  export let onReorderGame = (reorderData: { fromIndex: number; toIndex: number }) => {}
+  export let onDeleteGame = (deleteData: { id: string }) => {}
 
   let draggedIndex = null
 
