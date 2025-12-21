@@ -108,6 +108,10 @@
   </div>
 </main>
 
+<footer>
+  <p>made by <a href="https://nathanminchow.com" target="_blank" rel="noopener noreferrer">nathan minchow</a></p>
+</footer>
+
 <ShareModal bind:isOpen={isShareModalOpen} {games} />
 
 <style>
@@ -116,6 +120,12 @@
     padding: 0;
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     background: linear-gradient(135deg, rgb(90, 78, 229) 0%, #3c69bf 100%);
+    min-height: 100vh;
+  }
+
+  :global(#app) {
+    display: flex;
+    flex-direction: column;
     min-height: 100vh;
   }
 
@@ -130,7 +140,7 @@
 
   main {
     padding: 2rem 1rem;
-    min-height: 100vh;
+    flex: 1;
   }
 
   .container {
@@ -219,5 +229,38 @@
       position: relative;
       top: 0;
     }
+  }
+
+  .kofi-section {
+    margin-top: 1.5rem;
+    display: flex;
+    justify-content: center;
+    border-top: 1px solid #eee;
+    padding-top: 1.5rem;
+  }
+
+  .kofi-section img {
+    height: 36px;
+    transition: transform 0.2s;
+  }
+
+  .kofi-section img:hover {
+    transform: scale(1.05);
+  }
+
+  footer {
+    text-align: center;
+    color: rgba(255, 255, 255, 0.7);
+    font-size: 0.9rem;
+  }
+
+  footer a {
+    color: white;
+    text-decoration: none;
+    font-weight: 600;
+  }
+
+  footer a:hover {
+    text-decoration: underline;
   }
 </style>
