@@ -1,12 +1,12 @@
 <script>
-  import GameCard from './GameCard.svelte'
+  import GameCard from "./GameCard.svelte";
 
-  export let games = []
-  export let metadata = {}
+  export let games = [];
+  export let metadata = {};
 </script>
 
 <div class="shared-container">
-  <h2>{metadata.title || 'Top 10 Video Games'}</h2>
+  <h2>{metadata.title || "Top 10 Video Games"}</h2>
   {#if metadata.author}
     <p class="author">by {metadata.author}</p>
   {/if}
@@ -21,11 +21,6 @@
 
           <div class="title-section">
             <h3>{game.title}</h3>
-            {#if game.url}
-              <a href={game.url} target="_blank" rel="noreferrer" class="link-icon" title="Visit game website">
-                🔗
-              </a>
-            {/if}
           </div>
 
           <div class="game-card-wrapper">
@@ -53,7 +48,7 @@
 
   h2 {
     margin: 0 0 0.5rem 0;
-    color: #333;
+    color: hsl(245, 30%, 35%);
     font-size: 1.8rem;
   }
 
@@ -79,6 +74,7 @@
 
   .game-item {
     display: grid;
+    min-height: 160px;
     grid-template-columns: auto 1fr;
     grid-template-rows: auto auto;
     gap: 1rem;
@@ -97,25 +93,15 @@
     align-items: center;
     gap: 0.5rem;
     min-width: 0;
+    min-height: 80px;
   }
 
   .title-section h3 {
     margin: 0;
-    color: #333;
+    color: hsl(245, 30%, 35%);
     font-size: 1.4rem;
     flex: 1;
     min-width: 0;
-  }
-
-  .link-icon {
-    flex-shrink: 0;
-    font-size: 1.2rem;
-    text-decoration: none;
-    transition: transform 0.2s;
-  }
-
-  .link-icon:hover {
-    transform: scale(1.2);
   }
 
   .game-card-wrapper {
@@ -132,7 +118,11 @@
     left: -45px;
     top: -8px;
     font-size: 3.5rem;
-    background: linear-gradient(135deg, hsl(270, 37%, 66%) 0%, hsl(270, 37%, 46%) 100%);
+    background: linear-gradient(
+      135deg,
+      hsl(270, 37%, 66%) 0%,
+      hsl(270, 37%, 46%) 100%
+    );
     color: white;
     border-radius: 50%;
     display: flex;
@@ -162,7 +152,7 @@
     text-decoration: underline;
   }
 
-  @media (max-width: 768px) {
+  @media (max-width: 1024px) {
     .shared-container {
       padding: 1.5rem 1rem;
     }
@@ -179,11 +169,13 @@
       grid-template-columns: 1fr;
       grid-template-rows: auto auto;
       gap: 1rem;
+      padding: 1.5rem;
     }
 
     .title-section {
       grid-column: 1;
       grid-row: 1;
+      min-height: 0;
     }
 
     .title-section h3 {

@@ -114,7 +114,7 @@
 
   h2 {
     margin: 0 0 1rem 0;
-    color: #333;
+    color: hsl(245, 30%, 35%);
     font-size: 1.5rem;
   }
 
@@ -127,7 +127,7 @@
 
   label {
     font-weight: 600;
-    color: #333;
+    color: hsl(245, 30%, 35%);
     font-size: 0.95rem;
   }
 

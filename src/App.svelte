@@ -86,7 +86,7 @@
     {:else}
       <!-- Editor mode -->
       <h1>🎮 Top Ten</h1>
-      <p class="subtitle">Build and share your favorite games!</p>
+      <p class="subtitle">Share your favorite games!</p>
 
       <div class="content">
         <div class="form-section">
