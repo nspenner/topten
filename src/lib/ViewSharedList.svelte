@@ -1,15 +1,36 @@
 <script>
   import GameCard from "./GameCard.svelte";
+  import Button from "./Button.svelte";
+  import { generateListImage } from "./imageGenerator.js";
 
   export let games = [];
   export let metadata = {};
+
+  let isGenerating = false;
+
+  async function handleDownload() {
+    isGenerating = true;
+    try {
+      await generateListImage(games, metadata);
+    } catch (error) {
+      console.error("Error generating image:", error);
+    } finally {
+      isGenerating = false;
+    }
+  }
 </script>
 
 <div class="shared-container">
-  <h2>{metadata.title || "Top 10 Video Games"}</h2>
-  {#if metadata.author}
-    <p class="author">by {metadata.author}</p>
-  {/if}
+  <div class="header-info">
+    <h2>{metadata.title || "Top 10 Video Games"}</h2>
+    {#if metadata.author}
+      <p class="author">by {metadata.author}</p>
+    {/if}
+    <Button onClick={handleDownload} disabled={isGenerating || games.length === 0}>
+      {isGenerating ? "Generating..." : "Download List"}
+    </Button>
+    <span class="download-hint">Only the top 10 games will be included in the image.</span>
+  </div>
 
   {#if games.length === 0}
     <p class="empty-state">This list is empty.</p>
@@ -46,6 +67,10 @@
     box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
   }
 
+  .header-info {
+    margin-bottom: 2rem;
+  }
+
   h2 {
     margin: 0 0 0.5rem 0;
     color: hsl(245, 30%, 35%);
@@ -53,9 +78,16 @@
   }
 
   .author {
-    margin: 0 0 1.5rem 0;
+    margin: 0 0 1rem 0;
     color: #999;
     font-size: 0.95rem;
+  }
+
+  .download-hint {
+    display: block;
+    margin-top: 0.5rem;
+    font-size: 0.8rem;
+    color: #888;
   }
 
   .empty-state {
