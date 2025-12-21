@@ -118,7 +118,7 @@
               <li>Share the link with friends via text, email, or social media</li>
               <li>They can view your ranked list and see all the details</li>
               {#if supabase}
-                <li>Your list is saved securely on our servers with a short link</li>
+                <li>Your list is saved on our servers with a short link</li>
               {:else}
                 <li>The link includes all your games, ratings, and descriptions</li>
               {/if}
