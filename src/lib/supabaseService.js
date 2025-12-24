@@ -78,7 +78,6 @@ export async function saveGameList(games, metadata) {
       .insert({
         slug,
         title: metadata.title || 'My Top 10 Games',
-        author: metadata.author || 'Anonymous',
         games
       })
       .select('slug')
@@ -97,7 +96,7 @@ export async function saveGameList(games, metadata) {
 
 /**
  * Fetch a game list by slug
- * Returns { games: [], metadata: { title, author } } or null if not found
+ * Returns { games: [], metadata: { title } } or null if not found
  */
 export async function getGameListBySlug(slug) {
   if (!supabase) {
@@ -108,7 +107,7 @@ export async function getGameListBySlug(slug) {
   try {
     const { data, error } = await supabase
       .from('game_lists')
-      .select('games, title, author, view_count')
+      .select('games, title')
       .eq('slug', slug)
       .single()
     
@@ -119,19 +118,10 @@ export async function getGameListBySlug(slug) {
     
     if (!data) return null
     
-    // Increment view count in background (don't wait for it)
-    supabase
-      .from('game_lists')
-      .update({ view_count: (data.view_count || 0) + 1 })
-      .eq('slug', slug)
-      .then()
-      .catch(err => console.error('Error updating view count:', err))
-    
     return {
       games: data.games || [],
       metadata: {
-        title: data.title,
-        author: data.author
+        title: data.title
       }
     }
   } catch (error) {

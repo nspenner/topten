@@ -23,9 +23,6 @@
 <div class="shared-container">
   <div class="header-info">
     <h2>{metadata.title || "Top 10 Video Games"}</h2>
-    {#if metadata.author}
-      <p class="author">by {metadata.author}</p>
-    {/if}
     <Button onClick={handleDownload} disabled={isGenerating || games.length === 0}>
       {isGenerating ? "Generating..." : "Download List"}
     </Button>
@@ -77,12 +74,6 @@
     font-size: 1.8rem;
   }
 
-  .author {
-    margin: 0 0 1rem 0;
-    color: #999;
-    font-size: 0.95rem;
-  }
-
   .download-hint {
     display: block;
     margin-top: 0.5rem;
@@ -126,6 +117,7 @@
     gap: 0.5rem;
     min-width: 0;
     min-height: 80px;
+    padding: 0 2rem;
   }
 
   .title-section h3 {
@@ -149,6 +141,7 @@
     position: absolute;
     left: -45px;
     top: -8px;
+    font-size: 3.5rem;
     font-size: 3.5rem;
     background: linear-gradient(
       135deg,
@@ -193,15 +186,10 @@
       font-size: 1.5rem;
     }
 
-    .author {
-      font-size: 0.9rem;
-    }
-
     .game-item {
       grid-template-columns: 1fr;
       grid-template-rows: auto auto;
       gap: 1rem;
-      padding: 1.5rem;
     }
 
     .title-section {

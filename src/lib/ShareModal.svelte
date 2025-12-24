@@ -8,12 +8,10 @@
   let copied = false
   let shareUrl = ''
   let listTitle = 'My Top 10 Games'
-  let listAuthor = ''
 
   $: if (isOpen) {
     shareUrl = getShareUrl(games, {
-      title: listTitle,
-      author: listAuthor
+      title: listTitle
     })
     copied = false
   }
@@ -55,16 +53,6 @@
               id="listTitle"
               bind:value={listTitle}
               placeholder="e.g., My Top 10 Games"
-            />
-          </div>
-
-          <div class="form-group">
-            <label for="listAuthor">Author (optional)</label>
-            <input
-              type="text"
-              id="listAuthor"
-              bind:value={listAuthor}
-              placeholder="Your name"
             />
           </div>
         </div>

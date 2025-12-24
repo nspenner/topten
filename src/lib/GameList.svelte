@@ -121,7 +121,7 @@
   .games-list {
     display: flex;
     flex-direction: column;
-    gap: rem;
+    gap: 1.5rem;
     overflow-y: auto;
     flex: 1;
   }

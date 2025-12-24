@@ -9,7 +9,6 @@
   let copied = false
   let shareUrl = ''
   let listTitle = 'My Top 10 Games'
-  let listAuthor = ''
   let isLoading = false
   let useLegacyShare = false // Fallback if Supabase not configured
 
@@ -20,8 +19,7 @@
       // Try to save to Supabase if available
       if (supabase) {
         const slug = await saveGameList(games, {
-          title: listTitle,
-          author: listAuthor
+          title: listTitle
         })
         
         if (slug) {
@@ -31,8 +29,7 @@
           // Fallback to legacy sharing
           console.warn('Failed to save to Supabase, using client-side encoding')
           shareUrl = getLegacyShareUrl(games, {
-            title: listTitle,
-            author: listAuthor
+            title: listTitle
           })
           useLegacyShare = true
         }
@@ -40,8 +37,7 @@
         // Supabase not configured, use client-side encoding
         console.warn('Supabase not configured, using client-side encoding')
         shareUrl = getLegacyShareUrl(games, {
-          title: listTitle,
-          author: listAuthor
+          title: listTitle
         })
         useLegacyShare = true
       }
@@ -96,16 +92,6 @@
                 placeholder="e.g., My Top 10 Games"
               />
             </div>
-
-            <div class="form-group">
-              <label for="listAuthor">Author (optional)</label>
-              <input
-                type="text"
-                id="listAuthor"
-                bind:value={listAuthor}
-                placeholder="Your name"
-              />
-            </div>
           </div>
 
           <Button onClick={handleShare} disabled={isLoading}>
@@ -123,6 +109,9 @@
                 <li>The link includes all your games, ratings, and descriptions</li>
               {/if}
             </ul>
+            <p class="privacy-note">
+              <strong>Privacy Note:</strong> By generating a link, your list will be stored publicly on our database.
+            </p>
           </div>
         {:else}
           <p class="info">Share this link with friends:</p>
@@ -303,6 +292,15 @@
 
   .instructions li {
     margin-bottom: 0.5rem;
+  }
+
+  .privacy-note {
+    margin-top: 1rem !important;
+    font-size: 0.8rem !important;
+    color: #666 !important;
+    font-weight: normal !important;
+    border-top: 1px solid rgba(0,0,0,0.05);
+    padding-top: 0.75rem;
   }
 
   .warning {

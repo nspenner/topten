@@ -1,7 +1,7 @@
 /**
  * Generates a downloadable image of the top 10 games list.
  * @param {Array} games - The list of games.
- * @param {Object} metadata - Metadata about the list (title, author).
+ * @param {Object} metadata - Metadata about the list (title).
  */
 export async function generateListImage(games, metadata) {
   // Ensure fonts are loaded before drawing
@@ -30,17 +30,11 @@ export async function generateListImage(games, metadata) {
   ctx.letterSpacing = '4px'; // Added slight character spacing
   ctx.fillText(metadata.title || 'Top 10 Video Games', width / 2, 120);
 
-  if (metadata.author) {
-    ctx.fillStyle = 'rgba(255, 255, 255, 0.8)';
-    ctx.font = `36px ${bodyFont}`;
-    ctx.letterSpacing = '2px'; // Added slight character spacing
-    ctx.fillText(`by ${metadata.author}`, width / 2, 180);
-  }
   ctx.letterSpacing = '0px'; // Reset for the rest of the text
 
-  const top3Height = 320;
-  const bottom7Height = 180;
-  const startY = 210;
+  const top3Height = 340;
+  const bottom7Height = 170;
+  const startY = 180;
 
   // Helper to load image
   const loadImage = (src) => {
@@ -314,7 +308,7 @@ export async function generateListImage(games, metadata) {
   ctx.fillRect(linkX, linkY, linkWidth, bottom7Height - 20);
   
   ctx.fillStyle = '#ffffff';
-  ctx.font = `bold 36px 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif`;
+  ctx.font = `bold 36px ${bodyFont}`;
   ctx.textAlign = 'center';
   ctx.fillText('Create yours at', linkX + linkWidth / 2, linkY + 60);
   

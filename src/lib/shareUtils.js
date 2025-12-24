@@ -2,12 +2,11 @@ import pako from 'pako'
 
 /**
  * Minify data by using short field names
- * t=title, a=author, g=games, d=description, u=url, s=screenshot
+ * t=title, g=games, d=description, u=url, s=screenshot
  */
 function minifyData(games, metadata) {
   return {
     t: metadata.title || 'My Top 10 Games',
-    a: metadata.author || 'Anonymous',
     g: games.map(game => ({
       t: game.title,
       d: game.description,
@@ -23,7 +22,6 @@ function minifyData(games, metadata) {
 function unminifyData(data) {
   return {
     title: data.t,
-    author: data.a,
     games: Array.isArray(data.g) ? data.g.map(game => ({
       title: game.t,
       description: game.d,
@@ -51,7 +49,7 @@ export function encodeGames(games, metadata = {}) {
 
 /**
  * Decode games and metadata from URL parameter
- * Returns { games: [], metadata: { title, author } }
+ * Returns { games: [], metadata: { title } }
  */
 export function decodeGames(encoded) {
   try {
@@ -73,8 +71,7 @@ export function decodeGames(encoded) {
       return {
         games: unminified.games,
         metadata: {
-          title: unminified.title,
-          author: unminified.author
+          title: unminified.title
         }
       }
     }
@@ -88,8 +85,7 @@ export function decodeGames(encoded) {
     return {
       games: Array.isArray(data.games) ? data.games : [],
       metadata: {
-        title: data.title || 'My Top 10 Games',
-        author: data.author || 'Anonymous'
+        title: data.title || 'My Top 10 Games'
       }
     }
   } catch (e) {
@@ -109,7 +105,7 @@ export function getShareUrl(games, metadata = {}) {
 
 /**
  * Check if URL has a shared list
- * Returns { games: [], metadata: { title, author } } or null
+ * Returns { games: [], metadata: { title } } or null
  */
 export function getSharedListFromUrl() {
   const params = new URLSearchParams(window.location.search)

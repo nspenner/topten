@@ -3,6 +3,7 @@
   import GameForm from './lib/GameForm.svelte'
   import GameList from './lib/GameList.svelte'
   import ShareModal from './lib/ShareModal-Supabase.svelte'
+  import PrivacyModal from './lib/PrivacyModal.svelte'
   import ViewSharedList from './lib/ViewSharedList.svelte'
   import { getSharedListFromUrl } from './lib/shareUtils'
   import { getSharedSlugFromUrl, getGameListBySlug } from './lib/supabaseService'
@@ -12,17 +13,26 @@
   let sharedGames = null
   let sharedMetadata = {}
   let isShareModalOpen = false
+  let isPrivacyModalOpen = false
   let hasLoaded = false
+  let isInitialLoading = false
 
   onMount(async () => {
-    // Try to load from Supabase first (if slug in URL)
     const slug = getSharedSlugFromUrl()
+    const legacyShared = getSharedListFromUrl()
+    
+    if (slug || legacyShared) {
+      isInitialLoading = true
+    }
+
+    // Try to load from Supabase first (if slug in URL)
     if (slug) {
       try {
         const result = await getGameListBySlug(slug)
         if (result && result.games && result.games.length > 0) {
           sharedGames = result.games
           sharedMetadata = result.metadata || {}
+          isInitialLoading = false
           hasLoaded = true
           return // Exit early, successfully loaded from Supabase
         }
@@ -33,11 +43,12 @@
     }
 
     // Fallback: Try legacy URL encoding
-    const shared = getSharedListFromUrl()
-    if (shared && shared.games && shared.games.length > 0) {
-      sharedGames = shared.games
-      sharedMetadata = shared.metadata || {}
+    if (legacyShared && legacyShared.games && legacyShared.games.length > 0) {
+      sharedGames = legacyShared.games
+      sharedMetadata = legacyShared.metadata || {}
     }
+
+    isInitialLoading = false
 
     // Load games from localStorage if available
     const saved = localStorage.getItem('toptenGames')
@@ -80,13 +91,19 @@
 
 <main>
   <div class="container">
-    {#if sharedGames}
+    {#if isInitialLoading}
+      <div class="loading-container">
+        <div class="spinner"></div>
+        <p>Loading shared list...</p>
+      </div>
+    {:else if sharedGames}
       <!-- View shared list mode -->
       <ViewSharedList games={sharedGames} metadata={sharedMetadata} />
     {:else}
       <!-- Editor mode -->
-      <h1>🎮 Top Ten</h1>
+      <h1>Top Ten</h1>
       <p class="subtitle">Share your favorite games!</p>
+      <p class="note">(You can share more than 10 if you want)</p>
 
       <div class="content">
         <div class="form-section">
@@ -109,10 +126,14 @@
 </main>
 
 <footer>
-  <p>made by <a href="https://nathanminchow.com" target="_blank" rel="noopener noreferrer">nathan minchow</a></p>
+  <p>
+    made by <a href="https://nathanminchow.com" target="_blank" rel="noopener noreferrer">nathan minchow</a> 
+    | <button class="link-btn" on:click={() => isPrivacyModalOpen = true}>privacy policy</button>
+  </p>
 </footer>
 
 <ShareModal bind:isOpen={isShareModalOpen} {games} />
+<PrivacyModal bind:isOpen={isPrivacyModalOpen} />
 
 <style>
   :global(body) {
@@ -133,7 +154,7 @@
     font-family: "BBH Bartle", sans-serif;
   }
 
-  :global(h2, h3, .author, .rank, .subtitle) {
+  :global(h2, h3, .rank, .subtitle) {
     font-family: "BBH Hegarty", sans-serif;
     letter-spacing: 1px;
   }
@@ -160,6 +181,14 @@
     color: rgba(255, 255, 255, 0.8);
     margin-bottom: 2rem;
     font-size: 1.4rem;
+  }
+
+  .note {
+    text-align: center;
+    color: rgba(255, 255, 255, 0.7);
+    margin-top: -2rem;
+    margin-bottom: 2rem;
+    font-size: 0.9rem;
   }
 
   .content {
@@ -262,5 +291,45 @@
 
   footer a:hover {
     text-decoration: underline;
+  }
+
+  .link-btn {
+    background: none;
+    border: none;
+    color: white;
+    font-weight: 600;
+    cursor: pointer;
+    padding: 0;
+    font-size: inherit;
+    font-family: inherit;
+  }
+
+  .link-btn:hover {
+    text-decoration: underline;
+  }
+
+  .loading-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 60vh;
+    color: white;
+    gap: 1.5rem;
+  }
+
+  .spinner {
+    width: 50px;
+    height: 50px;
+    border: 5px solid rgba(255, 255, 255, 0.3);
+    border-radius: 50%;
+    border-top-color: white;
+    animation: spin 1s ease-in-out infinite;
+  }
+
+  @keyframes spin {
+    to {
+      transform: rotate(360deg);
+    }
   }
 </style>
