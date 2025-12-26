@@ -49,13 +49,14 @@
   <h2>Add a Game</h2>
 
   <div class="form-group">
-    <label for="title">Game Title *</label>
+    <label for="title">Game Title <span class="required" aria-hidden="true">*</span></label>
     <input
       type="text"
       id="title"
       bind:value={title}
       placeholder="e.g., The Legend of Zelda"
       required
+      aria-required="true"
     />
   </div>
 
@@ -69,16 +70,18 @@
       placeholder="https://example.com/image.jpg"
     />
     {#if screenshotUrl && !imageError}
-      <img
-        src={screenshotUrl}
-        alt="Preview"
-        class="preview"
-        on:load={handleImageLoad}
-        on:error={handleImageError}
-      />
+      <div class="preview-container">
+        <img
+          src={screenshotUrl}
+          alt="Preview of {title || 'game'}"
+          class="preview"
+          on:load={handleImageLoad}
+          on:error={handleImageError}
+        />
+      </div>
     {/if}
     {#if imageError}
-      <p class="error-text">Unable to load image. Check the URL.</p>
+      <p class="error-text" role="alert">Unable to load image. Check the URL.</p>
     {/if}
   </div>
 

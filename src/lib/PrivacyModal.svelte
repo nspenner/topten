@@ -6,14 +6,40 @@
   const closeModal = () => {
     isOpen = false
   }
+
+  const handleKeydown = (e) => {
+    if (e.key === 'Escape' && isOpen) {
+      closeModal()
+    }
+  }
 </script>
 
+<svelte:window on:keydown={handleKeydown} />
+
 {#if isOpen}
-  <div class="modal-overlay" on:click={closeModal}>
-    <div class="modal-content" on:click={(e) => e.stopPropagation()}>
+  <div 
+    class="modal-overlay" 
+    on:click={closeModal} 
+    on:keydown={(e) => e.key === 'Enter' && closeModal()}
+    role="button"
+    tabindex="-1"
+    aria-label="Close modal"
+  >
+    <div 
+      class="modal-content" 
+      on:click={(e) => e.stopPropagation()}
+      on:keydown={(e) => e.stopPropagation()}
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="privacy-modal-title"
+    >
       <div class="modal-header">
-        <h2>Privacy Policy</h2>
-        <button class="close-btn" on:click={closeModal}>✕</button>
+        <h2 id="privacy-modal-title">Privacy Policy</h2>
+        <button 
+          class="close-btn" 
+          on:click={closeModal}
+          aria-label="Close"
+        >✕</button>
       </div>
 
       <div class="modal-body">

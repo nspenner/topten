@@ -65,8 +65,15 @@
         <div class="title-section">
           <h3>{game.title}</h3>
           {#if game.url}
-            <a href={game.url} target="_blank" rel="noreferrer" class="link-icon" title="Visit game website">
-              🔗
+            <a 
+              href={game.url} 
+              target="_blank" 
+              rel="noreferrer" 
+              class="link-icon" 
+              title="Visit game website"
+              aria-label="Visit {game.title} website"
+            >
+              <span aria-hidden="true">🔗</span>
             </a>
           {/if}
         </div>
@@ -77,23 +84,26 @@
             on:click={() => moveUp(index)}
             disabled={index === 0}
             title="Move up"
+            aria-label="Move {game.title} up"
           >
-            ⬆️
+            <span aria-hidden="true">⬆️</span>
           </button>
           <button
             class="btn-reorder"
             on:click={() => moveDown(index)}
             disabled={index === games.length - 1}
             title="Move down"
+            aria-label="Move {game.title} down"
           >
-            ⬇️
+            <span aria-hidden="true">⬇️</span>
           </button>
           <button
             class="btn-delete"
             on:click={() => deleteGame(game.id)}
             title="Delete game"
+            aria-label="Delete {game.title}"
           >
-            🗑️
+            <span aria-hidden="true">🗑️</span>
           </button>
         </div>
 

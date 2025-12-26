@@ -92,8 +92,8 @@
 <main>
   <div class="container">
     {#if isInitialLoading}
-      <div class="loading-container">
-        <div class="spinner"></div>
+      <div class="loading-container" role="status" aria-live="polite">
+        <div class="spinner" aria-hidden="true"></div>
         <p>Loading shared list...</p>
       </div>
     {:else if sharedGames}
@@ -258,23 +258,6 @@
       position: relative;
       top: 0;
     }
-  }
-
-  .kofi-section {
-    margin-top: 1.5rem;
-    display: flex;
-    justify-content: center;
-    border-top: 1px solid #eee;
-    padding-top: 1.5rem;
-  }
-
-  .kofi-section img {
-    height: 36px;
-    transition: transform 0.2s;
-  }
-
-  .kofi-section img:hover {
-    transform: scale(1.05);
   }
 
   footer {

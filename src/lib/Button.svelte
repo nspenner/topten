@@ -1,8 +1,9 @@
 <script lang="ts">
-  export let type: 'button' | 'submit' | 'reset'
+  export let type: 'button' | 'submit' | 'reset' = 'button'
   export let disabled = false
   export let variant = 'primary'
   export let onClick = null
+  export let ariaLabel: string = undefined
 </script>
 
 <button
@@ -10,6 +11,7 @@
   {disabled}
   class={`btn btn-${variant}`}
   on:click={onClick}
+  aria-label={ariaLabel}
 >
   <slot />
 </button>

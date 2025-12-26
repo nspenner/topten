@@ -68,14 +68,40 @@
     isOpen = false
     shareUrl = ''
   }
+
+  const handleKeydown = (e) => {
+    if (e.key === 'Escape' && isOpen) {
+      closeModal()
+    }
+  }
 </script>
 
+<svelte:window on:keydown={handleKeydown} />
+
 {#if isOpen}
-  <div class="modal-overlay" on:click={closeModal}>
-    <div class="modal-content" on:click={(e) => e.stopPropagation()}>
+  <div 
+    class="modal-overlay" 
+    on:click={closeModal}
+    on:keydown={(e) => e.key === 'Enter' && closeModal()}
+    role="button"
+    tabindex="-1"
+    aria-label="Close modal"
+  >
+    <div 
+      class="modal-content" 
+      on:click={(e) => e.stopPropagation()}
+      on:keydown={(e) => e.stopPropagation()}
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="share-modal-title"
+    >
       <div class="modal-header">
-        <h2>Share Your List</h2>
-        <button class="close-btn" on:click={closeModal}>✕</button>
+        <h2 id="share-modal-title">Share Your List</h2>
+        <button 
+          class="close-btn" 
+          on:click={closeModal}
+          aria-label="Close"
+        >✕</button>
       </div>
 
       <div class="modal-body">
@@ -95,7 +121,11 @@
           </div>
 
           <Button onClick={handleShare} disabled={isLoading}>
-            {isLoading ? '⏳ Generating link...' : '🔗 Generate Share Link'}
+            {#if isLoading}
+              <span aria-hidden="true">⏳</span> Generating link...
+            {:else}
+              <span aria-hidden="true">🔗</span> Generate Share Link
+            {/if}
           </Button>
 
           <div class="instructions">
@@ -122,17 +152,24 @@
               readonly
               value={shareUrl}
               class="url-input"
+              aria-label="Shareable URL"
             />
-            <Button onClick={copyToClipboard}>{copied ? '✓ Copied!' : '📋 Copy'}</Button>
+            <Button onClick={copyToClipboard}>
+              {#if copied}
+                <span aria-hidden="true">✓</span> Copied!
+              {:else}
+                <span aria-hidden="true">📋</span> Copy
+              {/if}
+            </Button>
           </div>
 
           {#if useLegacyShare}
             <p class="warning">
-              ⚠️ Using client-side encoding (Supabase not configured). The URL is longer than needed.
+              <span aria-hidden="true">⚠️</span> Using client-side encoding (Supabase not configured). The URL is longer than needed.
               <a href="./SUPABASE_SETUP.md" target="_blank">Set up Supabase</a> for shorter URLs.
             </p>
           {:else}
-            <p class="success">✓ List saved! Short link ready to share.</p>
+            <p class="success"><span aria-hidden="true">✓</span> List saved! Short link ready to share.</p>
           {/if}
 
           <Button onClick={closeModal} style="margin-top: 1rem; width: 100%; background: #f0f0f0; color: #333;">Close</Button>

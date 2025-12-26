@@ -50,7 +50,7 @@
   {/if}
 
   <p class="footer-note">
-    ⚡ Create your own top 10 list by visiting <a href="/">topten</a>
+    <span aria-hidden="true">⚡</span> Create your own top 10 list by visiting <a href="/">topten</a>
   </p>
 </div>
 
