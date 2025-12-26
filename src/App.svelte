@@ -242,6 +242,10 @@
     .list-header {
       flex-direction: column-reverse;
     }
+
+    footer {
+      margin-bottom: 4rem;
+    }
   }
 
   :global(.list-header .btn) {
