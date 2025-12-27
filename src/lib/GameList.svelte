@@ -51,7 +51,7 @@
 <div class="list-container">
   <h2>Your Games {games.length > 0 ? `(${games.length})` : ''}</h2>
 
-  <div class="games-list">
+  <div class="games-list" role="list">
     {#each games as game, index (game.id)}
       <div
         class="game-item"
@@ -59,6 +59,7 @@
         on:dragstart={() => handleDragStart(index)}
         on:dragover={handleDragOver}
         on:drop={() => handleDrop(index)}
+        role="listitem"
       >
         <div class="rank">{index + 1}</div>
 

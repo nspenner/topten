@@ -58,6 +58,7 @@
       role="dialog"
       aria-modal="true"
       aria-labelledby="share-modal-title-legacy"
+      tabindex="-1"
     >
       <div class="modal-header">
         <h2 id="share-modal-title-legacy">Share Your List</h2>

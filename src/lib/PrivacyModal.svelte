@@ -32,6 +32,7 @@
       role="dialog"
       aria-modal="true"
       aria-labelledby="privacy-modal-title"
+      tabindex="-1"
     >
       <div class="modal-header">
         <h2 id="privacy-modal-title">Privacy Policy</h2>
@@ -141,16 +142,6 @@
 
   .modal-body li {
     margin-bottom: 0.25rem;
-  }
-
-  .modal-body a {
-    color: #667eea;
-    text-decoration: none;
-    font-weight: 600;
-  }
-
-  .modal-body a:hover {
-    text-decoration: underline;
   }
 
   .modal-footer {
