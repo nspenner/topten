@@ -24,7 +24,7 @@
   <div class="header-info">
     <h2>{metadata.title || "Top 10 Video Games"}</h2>
     <Button onclick={handleDownload} disabled={isGenerating || games.length === 0}>
-      {isGenerating ? "Generating..." : "Download List"}
+      {isGenerating ? "Generating..." : "Download List Image"}
     </Button>
     <span class="download-hint">Only the top 10 games will be included in the image.</span>
   </div>
