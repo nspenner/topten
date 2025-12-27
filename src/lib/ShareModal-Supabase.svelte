@@ -2,15 +2,15 @@
   import { saveGameList, getShareUrl, supabase } from './supabaseService'
   import { getShareUrl as getLegacyShareUrl } from './shareUtils'
   import Button from './Button.svelte'
+  import Modal from './Modal.svelte'
 
-  export let games = []
-  export let isOpen = false
+  let { games = [], isOpen = $bindable(false) } = $props();
 
-  let copied = false
-  let shareUrl = ''
-  let listTitle = 'My Top 10 Games'
-  let isLoading = false
-  let useLegacyShare = false // Fallback if Supabase not configured
+  let copied = $state(false)
+  let shareUrl = $state('')
+  let listTitle = $state('My Top 10 Games')
+  let isLoading = $state(false)
+  let useLegacyShare = $state(false) // Fallback if Supabase not configured
 
   const handleShare = async () => {
     isLoading = true
@@ -68,152 +68,92 @@
     isOpen = false
     shareUrl = ''
   }
-
-  const handleKeydown = (e) => {
-    if (e.key === 'Escape' && isOpen) {
-      closeModal()
-    }
-  }
 </script>
 
-<svelte:window on:keydown={handleKeydown} />
-
-{#if isOpen}
-  <div 
-    class="modal-overlay" 
-    on:click={closeModal}
-    on:keydown={(e) => e.key === 'Enter' && closeModal()}
-    role="button"
-    tabindex="-1"
-    aria-label="Close modal"
-  >
-    <div 
-      class="modal-content" 
-      on:click={(e) => e.stopPropagation()}
-      on:keydown={(e) => e.stopPropagation()}
-      role="dialog"
-      aria-modal="true"
-      aria-labelledby="share-modal-title"
-      tabindex="-1"
-    >
-      <div class="modal-header">
-        <h2 id="share-modal-title">Share Your List</h2>
-        <button 
-          class="close-btn" 
-          on:click={closeModal}
-          aria-label="Close"
-        >✕</button>
-      </div>
-
-      <div class="modal-body">
-        {#if !shareUrl}
-          <p class="info">Customize and share your list:</p>
-
-          <div class="metadata-fields">
-            <div class="form-group">
-              <label for="listTitle">List Title</label>
-              <input
-                type="text"
-                id="listTitle"
-                bind:value={listTitle}
-                placeholder="e.g., My Top 10 Games"
-              />
-            </div>
-          </div>
-
-          <Button onClick={handleShare} disabled={isLoading}>
-            {#if isLoading}
-              <span aria-hidden="true">⏳</span> Generating link...
-            {:else}
-              <span aria-hidden="true">🔗</span> Generate Share Link
-            {/if}
-          </Button>
-
-          <div class="instructions">
-            <p><strong>How it works:</strong></p>
-            <ul>
-              <li>Share the link with friends via text, email, or social media</li>
-              <li>They can view your ranked list and see all the details</li>
-              {#if supabase}
-                <li>Your list is saved on our servers with a short link</li>
-              {:else}
-                <li>The link includes all your games, ratings, and descriptions</li>
-              {/if}
-            </ul>
-            <p class="privacy-note">
-              <strong>Privacy Note:</strong> By generating a link, your list will be stored publicly on our database.
-            </p>
-          </div>
-        {:else}
-          <p class="info">Share this link with friends:</p>
-
-          <div class="url-container">
-            <input
-              type="text"
-              readonly
-              value={shareUrl}
-              class="url-input"
-              aria-label="Shareable URL"
-            />
-            <Button onClick={copyToClipboard}>
-              {#if copied}
-                <span aria-hidden="true">✓</span> Copied!
-              {:else}
-                <span aria-hidden="true">📋</span> Copy
-              {/if}
-            </Button>
-          </div>
-
-          {#if useLegacyShare}
-            <p class="warning">
-              <span aria-hidden="true">⚠️</span> Using client-side encoding (Supabase not configured). The URL is longer than needed.
-              <a href="./SUPABASE_SETUP.md" target="_blank">Set up Supabase</a> for shorter URLs.
-            </p>
-          {:else}
-            <p class="success"><span aria-hidden="true">✓</span> List saved! Short link ready to share.</p>
-          {/if}
-
-          <Button onClick={closeModal} style="margin-top: 1rem; width: 100%; background: #f0f0f0; color: #333;">Close</Button>
-        {/if}
-      </div>
-    </div>
+<Modal bind:showModal={isOpen}>
+  <div class="modal-header">
+    <h2 id="share-modal-title">Share Your List</h2>
+    <button 
+      class="close-btn" 
+      onclick={closeModal}
+      aria-label="Close"
+    >✕</button>
   </div>
-{/if}
+
+  <div class="modal-body">
+    {#if !shareUrl}
+      <p class="info">Customize and share your list:</p>
+
+      <div class="metadata-fields">
+        <div class="form-group">
+          <label for="listTitle">List Title</label>
+          <input
+            type="text"
+            id="listTitle"
+            bind:value={listTitle}
+            placeholder="e.g., My Top 10 Games"
+          />
+        </div>
+      </div>
+
+      <Button onclick={handleShare} disabled={isLoading}>
+        {#if isLoading}
+          <span aria-hidden="true">⏳</span> Generating link...
+        {:else}
+          <span aria-hidden="true">🔗</span> Generate Share Link
+        {/if}
+      </Button>
+
+      <div class="instructions">
+        <p><strong>How it works:</strong></p>
+        <ul>
+          <li>Share the link with friends via text, email, or social media</li>
+          <li>They can view your ranked list and see all the details</li>
+          {#if supabase}
+            <li>Your list is saved on our servers with a short link</li>
+          {:else}
+            <li>The link includes all your games, ratings, and descriptions</li>
+          {/if}
+        </ul>
+        <p class="privacy-note">
+          <strong>Privacy Note:</strong> By generating a link, your list will be stored publicly on our database.
+        </p>
+      </div>
+    {:else}
+      <p class="info">Share this link with friends:</p>
+
+      <div class="url-container">
+        <input
+          type="text"
+          readonly
+          value={shareUrl}
+          class="url-input"
+          aria-label="Shareable URL"
+        />
+        <Button onclick={copyToClipboard}>
+          {#if copied}
+            <span aria-hidden="true">✓</span> Copied!
+          {:else}
+            <span aria-hidden="true">📋</span> Copy
+          {/if}
+        </Button>
+      </div>
+
+      {#if useLegacyShare}
+        <p class="warning">
+          <span aria-hidden="true">⚠️</span> Using client-side encoding (Supabase not configured). The URL is longer than needed.
+          <a href="./SUPABASE_SETUP.md" target="_blank">Set up Supabase</a> for shorter URLs.
+        </p>
+      {:else}
+        <p class="success"><span aria-hidden="true">✓</span> List saved! Short link ready to share.</p>
+      {/if}
+
+      <Button onclick={closeModal} style="margin-top: 1rem; width: 100%; background: #f0f0f0; color: #333;">Close</Button>
+    {/if}
+  </div>
+</Modal>
 
 <style>
-  .modal-overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0, 0, 0, 0.6);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    z-index: 1000;
-  }
-
-  .modal-content {
-    background: white;
-    border-radius: 12px;
-    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
-    max-width: 500px;
-    width: 90%;
-    animation: slideIn 0.3s ease-out;
-  }
-
-  @keyframes slideIn {
-    from {
-      transform: translateY(-20px);
-      opacity: 0;
-    }
-    to {
-      transform: translateY(0);
-      opacity: 1;
-    }
-  }
-
   .modal-header {
     display: flex;
     justify-content: space-between;
@@ -342,7 +282,7 @@
   }
 
   .warning {
-    margin: 1rem 0 0 0;
+    margin: 1rem 0;
     padding: 0.75rem;
     background: #fff3cd;
     border: 1px solid #ffc107;
@@ -359,7 +299,7 @@
   }
 
   .success {
-    margin: 1rem 0 0 0;
+    margin: 1rem 0;
     padding: 0.75rem;
     background: #d4edda;
     border: 1px solid #28a745;

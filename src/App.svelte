@@ -116,7 +116,7 @@
           {:else}
             <div class="list-header">
               <GameList {games} onReorderGame={reorderGame} onDeleteGame={deleteGame} />
-              <Button onClick={openShareModal}>Share List</Button>
+              <Button onclick={openShareModal}>Share List</Button>
             </div>
           {/if}
         </div>
@@ -128,7 +128,7 @@
 <footer>
   <p>
     made by <a href="https://nathanminchow.com" target="_blank" rel="noopener noreferrer">nathan minchow</a> 
-    | <button class="link-btn" on:click={() => isPrivacyModalOpen = true}>privacy policy</button>
+    | <button class="link-btn" onclick={() => isPrivacyModalOpen = true}>privacy policy</button>
   </p>
 </footer>
 

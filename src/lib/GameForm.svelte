@@ -45,7 +45,7 @@
   }
 </script>
 
-<form on:submit={handleSubmit}>
+<form onsubmit={handleSubmit}>
   <h2>Add a Game</h2>
 
   <div class="form-group">
@@ -66,7 +66,7 @@
       type="url"
       id="screenshotUrl"
       bind:value={screenshotUrl}
-      on:change={handleImageUrlChange}
+      onchange={handleImageUrlChange}
       placeholder="https://example.com/image.jpg"
     />
     {#if screenshotUrl && !imageError}
@@ -75,8 +75,8 @@
           src={screenshotUrl}
           alt="Preview of {title || 'game'}"
           class="preview"
-          on:load={handleImageLoad}
-          on:error={handleImageError}
+          onload={handleImageLoad}
+          onerror={handleImageError}
         />
       </div>
     {/if}

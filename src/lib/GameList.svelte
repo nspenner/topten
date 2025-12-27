@@ -56,9 +56,9 @@
       <div
         class="game-item"
         draggable="true"
-        on:dragstart={() => handleDragStart(index)}
-        on:dragover={handleDragOver}
-        on:drop={() => handleDrop(index)}
+        ondragstart={() => handleDragStart(index)}
+        ondragover={handleDragOver}
+        ondrop={() => handleDrop(index)}
         role="listitem"
       >
         <div class="rank">{index + 1}</div>
@@ -82,7 +82,7 @@
         <div class="controls">
           <button
             class="btn-reorder"
-            on:click={() => moveUp(index)}
+            onclick={() => moveUp(index)}
             disabled={index === 0}
             title="Move up"
             aria-label="Move {game.title} up"
@@ -91,7 +91,7 @@
           </button>
           <button
             class="btn-reorder"
-            on:click={() => moveDown(index)}
+            onclick={() => moveDown(index)}
             disabled={index === games.length - 1}
             title="Move down"
             aria-label="Move {game.title} down"
@@ -100,7 +100,7 @@
           </button>
           <button
             class="btn-delete"
-            on:click={() => deleteGame(game.id)}
+            onclick={() => deleteGame(game.id)}
             title="Delete game"
             aria-label="Delete {game.title}"
           >

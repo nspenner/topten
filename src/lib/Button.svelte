@@ -1,19 +1,22 @@
 <script lang="ts">
-  export let type: 'button' | 'submit' | 'reset' = 'button'
-  export let disabled = false
-  export let variant = 'primary'
-  export let onClick = null
-  export let ariaLabel: string = undefined
+  let { 
+    type = 'button', 
+    disabled = false, 
+    variant = 'primary', 
+    onclick = null, 
+    ariaLabel = undefined,
+    children
+  } = $props();
 </script>
 
 <button
   {type}
   {disabled}
   class={`btn btn-${variant}`}
-  on:click={onClick}
+  onclick={onclick}
   aria-label={ariaLabel}
 >
-  <slot />
+  {@render children()}
 </button>
 
 <style>
