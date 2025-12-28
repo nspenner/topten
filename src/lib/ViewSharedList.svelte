@@ -68,6 +68,12 @@
     margin-bottom: 2rem;
   }
 
+  .header-info > h2 {
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+  }
+
   h2 {
     margin: 0 0 0.5rem 0;
     color: hsl(245, 30%, 35%);
