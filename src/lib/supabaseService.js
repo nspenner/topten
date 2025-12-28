@@ -69,6 +69,36 @@ export async function saveGameList(games, metadata) {
     console.error('Supabase not configured')
     return null
   }
+
+  if (games.length > 15) {
+    console.error('Too many games. Maximum allowed is 15.')
+    return null
+  }
+
+  if (metadata.title && metadata.title.length > 100) {
+    console.error('Title is too long. Maximum allowed is 100 characters.')
+    return null
+  }
+
+  // Validate individual game fields
+  for (const game of games) {
+    if (game.title && game.title.length > 50) {
+      console.error(`Game title too long: ${game.title}`)
+      return null
+    }
+    if (game.description && game.description.length > 250) {
+      console.error(`Description too long for game: ${game.title}`)
+      return null
+    }
+    if (game.url && game.url.length > 250) {
+      console.error(`URL too long for game: ${game.title}`)
+      return null
+    }
+    if (game.screenshot && game.screenshot.length > 250) {
+      console.error(`Screenshot URL too long for game: ${game.title}`)
+      return null
+    }
+  }
   
   try {
     const slug = await generateUniqueSlug()

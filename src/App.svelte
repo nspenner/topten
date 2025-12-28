@@ -70,6 +70,7 @@
   }
 
   const addGame = (newGame) => {
+    if (games.length >= 15) return
     games = [...games, { ...newGame, id: Date.now() }]
   }
 
@@ -107,7 +108,7 @@
 
       <div class="content">
         <div class="form-section">
-          <GameForm onAddGame={addGame} />
+          <GameForm onAddGame={addGame} gameCount={games.length} />
         </div>
 
         <div class="list-section">

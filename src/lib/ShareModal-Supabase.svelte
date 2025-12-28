@@ -6,6 +6,8 @@
 
   let { games = [], isOpen = $bindable(false) } = $props();
 
+  const MAX_TITLE_LENGTH = 100
+
   let copied = $state(false)
   let shareUrl = $state('')
   let listTitle = $state('My Top 10 Games')
@@ -87,12 +89,18 @@
       <div class="metadata-fields">
         <div class="form-group">
           <label for="listTitle">List Title</label>
-          <input
-            type="text"
-            id="listTitle"
-            bind:value={listTitle}
-            placeholder="e.g., My Top 10 Games"
-          />
+          <div class="input-wrapper">
+            <input
+              type="text"
+              id="listTitle"
+              bind:value={listTitle}
+              placeholder="e.g., My Top 10 Games"
+              maxlength={MAX_TITLE_LENGTH}
+            />
+            <span class="char-count" class:near-limit={listTitle.length > MAX_TITLE_LENGTH * 0.8}>
+              {listTitle.length}/{MAX_TITLE_LENGTH}
+            </span>
+          </div>
         </div>
       </div>
 
@@ -211,6 +219,23 @@
     font-weight: 600;
     color: #333;
     font-size: 0.9rem;
+  }
+
+  .input-wrapper {
+    position: relative;
+    width: 100%;
+  }
+
+  .char-count {
+    position: absolute;
+    right: 0.75rem;
+    bottom: -1.2rem;
+    font-size: 0.75rem;
+    color: #888;
+  }
+
+  .char-count.near-limit {
+    color: #d32f2f;
   }
 
   .form-group input {

@@ -2,6 +2,12 @@
   import Button from './Button.svelte'
 
   export let onAddGame = (game: { title: string; description: string; url: string | null; screenshot: string | null }) => {}
+  export let gameCount = 0
+
+  const MAX_GAMES = 15
+  const MAX_TITLE_LENGTH = 50
+  const MAX_DESCRIPTION_LENGTH = 250
+  const MAX_URL_LENGTH = 250
 
   let title = ''
   let description = ''
@@ -50,25 +56,37 @@
 
   <div class="form-group">
     <label for="title">Game Title <span class="required" aria-hidden="true">*</span></label>
-    <input
-      type="text"
-      id="title"
-      bind:value={title}
-      placeholder="e.g., The Legend of Zelda"
-      required
-      aria-required="true"
-    />
+    <div class="input-wrapper">
+      <input
+        type="text"
+        id="title"
+        bind:value={title}
+        placeholder="e.g., The Legend of Zelda"
+        required
+        aria-required="true"
+        maxlength={MAX_TITLE_LENGTH}
+      />
+      <span class="char-count" class:near-limit={title.length > MAX_TITLE_LENGTH * 0.8}>
+        {title.length}/{MAX_TITLE_LENGTH}
+      </span>
+    </div>
   </div>
 
   <div class="form-group">
     <label for="screenshotUrl">Screenshot URL (optional)</label>
-    <input
-      type="url"
-      id="screenshotUrl"
-      bind:value={screenshotUrl}
-      onchange={handleImageUrlChange}
-      placeholder="https://example.com/image.jpg"
-    />
+    <div class="input-wrapper">
+      <input
+        type="url"
+        id="screenshotUrl"
+        bind:value={screenshotUrl}
+        onchange={handleImageUrlChange}
+        placeholder="https://example.com/image.jpg"
+        maxlength={MAX_URL_LENGTH}
+      />
+      <span class="char-count" class:near-limit={screenshotUrl.length > MAX_URL_LENGTH * 0.8}>
+        {screenshotUrl.length}/{MAX_URL_LENGTH}
+      </span>
+    </div>
     {#if screenshotUrl && !imageError}
       <div class="preview-container">
         <img
@@ -87,25 +105,39 @@
 
   <div class="form-group">
     <label for="url">Game URL (optional)</label>
-    <input
-      type="url"
-      id="url"
-      bind:value={url}
-      placeholder="https://example.com"
-    />
+    <div class="input-wrapper">
+      <input
+        type="url"
+        id="url"
+        bind:value={url}
+        placeholder="https://example.com"
+        maxlength={MAX_URL_LENGTH}
+      />
+      <span class="char-count" class:near-limit={url.length > MAX_URL_LENGTH * 0.8}>
+        {url.length}/{MAX_URL_LENGTH}
+      </span>
+    </div>
   </div>
 
   <div class="form-group">
     <label for="description">Why is it in your list? (optional)</label>
-    <textarea
-      id="description"
-      bind:value={description}
-      placeholder="Share what makes this game special to you..."
-      rows="4">
-    </textarea>
+    <div class="input-wrapper">
+      <textarea
+        id="description"
+        bind:value={description}
+        placeholder="Share what makes this game special to you..."
+        rows="4"
+        maxlength={MAX_DESCRIPTION_LENGTH}>
+      </textarea>
+      <span class="char-count" class:near-limit={description.length > MAX_DESCRIPTION_LENGTH * 0.8}>
+        {description.length}/{MAX_DESCRIPTION_LENGTH}
+      </span>
+    </div>
   </div>
 
-  <Button type="submit">Add Game</Button>
+  <Button type="submit" disabled={gameCount >= MAX_GAMES}>
+    {gameCount >= MAX_GAMES ? `Limit Reached (${MAX_GAMES})` : 'Add Game'}
+  </Button>
 </form>
 
 <style>
@@ -132,6 +164,23 @@
     font-weight: 600;
     color: hsl(245, 30%, 35%);
     font-size: 0.95rem;
+  }
+
+  .input-wrapper {
+    width: 100%;
+    position: relative;
+  }
+
+  .char-count {
+    position: absolute;
+    right: 0.75rem;
+    bottom: -1.2rem;
+    font-size: 0.75rem;
+    color: #888;
+  }
+
+  .char-count.near-limit {
+    color: #d32f2f;
   }
 
   input[type='text'],
